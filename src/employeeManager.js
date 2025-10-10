@@ -19,32 +19,40 @@ class EmployeeManager {
   delete_Employee(account) {
     const index = this.locate_index(account);
     // Xóa
-    this.arr_Employee.splice(index, 1);
+    if (index!==-1) {
+      this.arr_Employee.splice(index, 1);
+    }
   }
 
-  edit_Employee(account) {
+  get_Account_Employee(account) {
     const index = this.locate_index(account);
-    const obj_Employee = this.arr_Employee[index];
+      if (index!==-1) return this.arr_Employee[index];
     return obj_Employee;
   }
 
-  update_Employee(account) {
-    const index = this.locate_index(account);
-    const obj_Employee = this.arr_Employee[index];
-    const new_account = obj_Employee.account;
-    return new_account;
+  update_Employee(obj_Employee) {
+    const index = this.locate_index(obj_Employee.account);
+    if (index!==-1) {
+      this.arr_Employee[index] = obj_Employee;
+    } 
   }
 
-  filter_Employee(input_Search) {
-    const filter_Employee = [];
-
+  search_Employee(input_Search) {
+    const search_Employee_Arr = [];
+    if (input_Search === "tat ca" || input_Search ==="All") {
+       return this.arr_Employee;
+      }
     for (let i = 0; i < this.arr_Employee.length; i += 1) {
-      const obj_Employee = this.arr_Employee[i];
-      if (input_Search === obj_Employee.Xep_Loai) {
-        filter_Employee.push(obj_Employee);
+       const obj_Employee = this.arr_Employee[i];
+       // Chuyển xếp loại sang chữ thường
+      const lower_Input_Search = input_Search.toLowerCase();
+      // Chuyển input_Search sang chữ thường
+      const lower_Ranking = obj_Employee.Xep_Loai.toLowerCase();
+      if (lower_Ranking.indexOf(lower_Input_Search) !== -1) {
+        search_Employee_Arr.push(obj_Employee);
       }
     }
-    return filter_Employee;
+    return search_Employee_Arr;
   }
 }
 

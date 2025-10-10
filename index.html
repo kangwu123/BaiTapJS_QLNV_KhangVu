@@ -186,9 +186,7 @@
 
 				<!-- Modal body -->
 				<div class="modal-body">
-
-					<form role="form">
-
+					<form role="form" id="employee_Form">
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-prepend">
@@ -197,7 +195,7 @@
 								<input type="text" name="tk" id="tknv" class="form-control input-sm"
 									placeholder="Tài khoản">
 							</div>
-
+							<div id="invalidAccount" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbTKNV"></span>
 						</div>
 
@@ -209,6 +207,7 @@
 								<input type="name" name="name" id="name" class="form-control input-sm"
 									placeholder="Họ và tên">
 							</div>
+							<div id="invalidName" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbTen"></span>
 						</div>
 
@@ -220,7 +219,7 @@
 								<input type="email" name="email" id="email" class="form-control input-sm"
 									placeholder="Email">
 							</div>
-
+							 <div id="invalidEmail" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbEmail"></span>
 						</div>
 
@@ -232,6 +231,7 @@
 								<input type="password" name="password" id="password" class="form-control input-sm"
 									placeholder="Mật khẩu">
 							</div>
+							<div id="invalidPassword" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbMatKhau"></span>
 						</div>
 
@@ -243,7 +243,7 @@
 								<input type="text" name="ngaylam" id="datepicker" class="form-control"
 									placeholder="Ngày làm">
 							</div>
-
+							 <div id="invalidWorkDays" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbNgay"></span>
 						</div>
 						
@@ -255,6 +255,7 @@
 								<input type="text" name="luongCB" id="luongCB" class="form-control input-sm"
 									placeholder="Lương cơ bản">
 							</div>
+							 <div id="invalidBasicSalary" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbLuongCB"></span>
 						</div>
 						<div class="form-group">
@@ -269,7 +270,7 @@
 									<option>Nhân viên</option>
 								</select>
 							</div>
-
+							<div id="invalid_Position" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbChucVu"></span>
 						</div>
 						<div class="form-group">
@@ -280,6 +281,7 @@
 								<input type="text" name="gioLam" id="gioLam" class="form-control input-sm"
 									placeholder="Giờ làm">
 							</div>
+							 <div id="invalidWorkHour" class="invalid-feedback"></div>
 							<span class="sp-thongbao" id="tbGiolam"></span>
 						</div>
 
@@ -309,13 +311,12 @@
 	<script src="js/datepicker.js"></script>
 
 	<!-- Wow -->
-	<!-- <script src="js/wow.min.js"></script>	
+	<script src="js/wow.min.js"></script>	
 	<script>
 		new WOW().init();
-	</script>  -->
+	</script> 
 
 	<!-- <script src="js/modal.js"></script> -->
-
 
 	<script type="text/javascript">
 		$(document).ready(function () {

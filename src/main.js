@@ -1,21 +1,181 @@
 import Employee from "./employee.js";
 import EmployeeManager from "./employeeManager.js";
+import Validation from "./validation.js";
 
 const manager = new EmployeeManager();
+const validate = new Validation();
 
 // Dom tới Id
-const Dom_Id = (id) => document.getElementById(id);
+export const getEle = (id) => document.getElementById(id);
 
-// Lấy thông tin của từng employee
-const get_Employee_Info = () => {
-  const input_account = Dom_Id("tknv").value;
-  const input_fullname = Dom_Id("name").value;
-  const input_email = Dom_Id("email").value;
-  const input_password = Dom_Id("password").value;
-  const input_workdays = Dom_Id("datepicker").value;
-  const input_basicSalary = Dom_Id("luongCB").value;
-  const input_position = Dom_Id("chucvu").value;
-  const input_workinghour = Dom_Id("gioLam").value;
+const resetForm = () => {
+  getEle("employee_Form").reset();
+};
+
+const get_Employee_Info = (isAdd) => {
+  const input_account = getEle("tknv").value;
+  const input_fullname = getEle("name").value;
+  const input_email = getEle("email").value;
+  const input_password = getEle("password").value;
+  const input_workdays = getEle("datepicker").value;
+  const input_basicSalary = getEle("luongCB").value;
+  const input_position = getEle("chucvu").value;
+  const input_workinghour = getEle("gioLam").value;
+
+  // 4. Check xem có để trống hay không
+  let isValid = true;
+
+  // 4. Check hợp lệ Validation
+  // Tài khoản
+  if (isAdd) {
+    isValid &=
+      validate.checkEmpty(
+        input_account,
+        "invalidAccount",
+        "tknv",
+        "Vui lòng nhập Tài khoản."
+      ) &&
+      validate.checkCharacter_Number(
+        input_account,
+        "invalidAccount",
+        "tknv",
+        "Tài khoản không hợp lệ. Vui lòng chỉ nhập số."
+      ) &&
+      validate.checkLength(
+        input_account,
+        "invalidAccount",
+        "tknv",
+        "Tài khoản không hợp lệ. Vui lòng nhập 4-6 ký số.",
+        4,
+        6
+      ) &&
+      validate.checkExist(
+        input_account,
+        "invalidAccount",
+        "tknv",
+        "Tài khoản đã tồn tại. Vui lòng nhập Tài khoản khác.",
+        manager.arr_Employee
+      );
+  }
+
+  // Họ Tên
+  isValid &=
+    validate.checkEmpty(
+      input_fullname,
+      "invalidName",
+      "name",
+      "Vui lòng nhập Họ tên."
+    ) &&
+    validate.checkCharacterString(
+      input_fullname,
+      "invalidName",
+      "name",
+      "Vui lòng chỉ nhập chữ."
+    );
+
+  // Email
+  isValid &=
+    validate.checkEmpty(
+      input_email,
+      "invalidEmail",
+      "email",
+      "Vui lòng nhập Email."
+    ) &&
+    validate.checkEmailFormat(
+      input_email,
+      "invalidEmail",
+      "email",
+      "Email không hợp lệ. Vui lòng nhập lại Email."
+    );
+
+  // Mật khẩu
+  isValid &=
+    validate.checkEmpty(
+      input_password,
+      "invalidPassword",
+      "password",
+      "Vui lòng nhập Mật khẩu."
+    ) &&
+    validate.checkLength(
+      input_password,
+      "invalidPassword",
+      "password",
+      "Mật khẩu không hợp lệ. Vui lòng nhập Mật khẩu từ 6-10 ký tự.",
+      6,
+      10
+    ) &&
+    validate.checkPasswordFormat(
+      input_password,
+      "invalidPassword",
+      "password",
+      "Mật khẩu không hợp lệ. Vui lòng nhập lại Mật khẩu có chứa ít nhất 1 ký tự số, 1 ký tự in hoa, 1 ký tự đặc biệt."
+    );
+
+  // Ngày làm
+  isValid &=
+    validate.checkEmpty(
+      input_workdays,
+      "invalidWorkDays",
+      "datepicker",
+      "Vui lòng nhập Ngày làm."
+    ) &&
+    validate.checkWorkDays(
+      input_workdays,
+      "invalidWorkDays",
+      "datepicker",
+      "Định dạng Ngày làm không hợp lệ. Vui lòng nhập lại theo mm/dd/yyyy"
+    );
+
+  // Lương cơ bản
+  isValid &=
+    validate.checkEmpty(
+      input_basicSalary,
+      "invalidBasicSalary",
+      "luongCB",
+      "Vui lòng nhập Lương cơ bản."
+    ) &&
+    validate.checkCharacter_Number(
+      input_basicSalary,
+      "invalidBasicSalary",
+      "luongCB",
+      "Lương cơ bản không hợp lệ. Vui lòng chỉ nhập số."
+    ) &&
+    validate.checkBasicSalaryCondition(
+      input_basicSalary,
+      "invalidBasicSalary",
+      "luongCB",
+      "Vui lòng nhập Lương cơ bản từ 10000000 đến 20000000",
+      10000000,
+      20000000
+    );
+
+  // Chức vu
+  isValid &= validate.checkOption(
+    "chucvu",
+    "invalid_Position",
+    "Vui lòng chọn Chức vụ."
+  );
+
+  // Giờ làm
+  isValid &=
+    validate.checkEmpty(
+      input_workinghour,
+      "invalidWorkHour",
+      "gioLam",
+      "Vui lòng nhập Giờ làm."
+    ) &&
+    validate.checkWorkHour(
+      input_workinghour,
+      "invalidWorkHour",
+      "gioLam",
+      "Giờ làm không hợp lệ. Vui lòng chỉ nhập giờ làm từ 80 đến 200",
+      80,
+      200
+    );
+
+  if (!isValid) {
+    return null;
+  }
 
   const employee = new Employee(
     input_account,
@@ -40,11 +200,13 @@ const get_Employee_Info = () => {
 
   // 6. Xếp loại
   if (input_workinghour >= 192) {
-    employee.Xep_Loai = "Nhân viên xuất sắc";
+    employee.Xep_Loai = "Xuat sac";
   } else if (input_workinghour >= 176 && input_workinghour < 192) {
-    employee.Xep_Loai = "Nhân viên giỏi";
+    employee.Xep_Loai = "Gioi";
   } else if (input_workinghour >= 160 && input_workinghour < 176) {
-    employee.Xep_Loai = "Nhân viên khá";
+    employee.Xep_Loai = "Kha";
+  } else {
+    employee.Xep_Loai = "Trung binh";
   }
 
   return employee;
@@ -64,14 +226,14 @@ const render_ListUI = (employee_List) => {
         <td>${obj_Employee.position}</td>
         <td>${obj_Employee.TotalSalary}</td>
         <td>${obj_Employee.Xep_Loai}</td>
-        <td class="d-flex">
+        <td class="d-flex align-items-center">
           <button data-toggle="modal" data-target="#myModal" class="btn btn-info" onclick="btn_Edit_Employee('${obj_Employee.account}')">Sửa</button>
           <button class="btn btn-danger" onclick="btn_Delete_Employee('${obj_Employee.account}')">Xóa</button>
         </td>
       </tr>
     `;
   }
-  Dom_Id("tableDanhSach").innerHTML = content_HTML;
+  getEle("tableDanhSach").innerHTML = content_HTML;
 };
 
 // Lưu thông tin employee vào localStorage
@@ -104,87 +266,75 @@ const btn_Delete_Employee = (account) => {
 
   set_localStorage();
 };
+
 // Khai báo ra ngoài window
 window.btn_Delete_Employee = btn_Delete_Employee;
 
 // Dom tới nút thêm employee
-  Dom_Id("btnThem").onclick = function () {
-  Dom_Id("header-title").innerHTML = "Log In";
-  Dom_Id("btnThemNV").style.display = "block";
-  Dom_Id("btnCapNhat").style.display = "none";
+getEle("btnThem").onclick = function () {
+  getEle("header-title").innerHTML = "Log In";
+  getEle("btnThemNV").style.display = "block";
+  getEle("btnCapNhat").style.display = "none";
 
   // Mỏ phần tai_Khoan
-  Dom_Id("tknv").disabled = false;
-};
-
-// 4. Khi nhấp vào nút edit employee
-const btn_Edit_Employee = (account) => {
-  Dom_Id("header-title").innerHTML = "Edit Information";
-  Dom_Id("btnThemNV").style.display = "none";
-  Dom_Id("btnCapNhat").style.display = "block";
-
-  // Block phần tai_Khoan
-  Dom_Id("tknv").disabled = true;
-
-  // Đưa lại thông tin vào phần input
-  const obj_Employee = manager.edit_Employee(account);
-
-  Dom_Id("tknv").value = obj_Employee.account;
-  Dom_Id("name").value = obj_Employee.fullname;
-  Dom_Id("email").value = obj_Employee.email;
-  Dom_Id("password").value = obj_Employee.password;
-  Dom_Id("datepicker").value = obj_Employee.workdays;
-  Dom_Id("luongCB").value = obj_Employee.basicSalary;
-  Dom_Id("chucvu").value = obj_Employee.position;
-  Dom_Id("gioLam").value = obj_Employee.workinghour;
-};
-// Khai báo ra ngoài window
-window.btn_Edit_Employee = btn_Edit_Employee;
-
-// 5. Khi nhấp vào nút update employee
-Dom_Id("btnCapNhat").onclick = function () {
-  let new_obj_Employee = get_Employee_Info();
-
-  const locate_tai_Khoan = manager.update_Employee(
-    new_obj_Employee.account
-  );
-
-  for (let i = 0; i < manager.arr_Employee.length; i += 1) {
-    let obj_Employee = manager.arr_Employee[i];
-    if (locate_tai_Khoan === obj_Employee.account) {
-      manager.arr_Employee[i] = new_obj_Employee;
-    }
-  }
-
-  render_ListUI(manager.arr_Employee);
-
-  set_localStorage();
-};
-
-// 6. Khi bấm nút tìm kiếm xếp loại
-Dom_Id("btnTimNV").onclick = function () {
-  // Dom tới người dùng nhập tìm kiếm
-  const input_Search = Dom_Id("searchName").value;
-
-  if (input_Search === "Tất cả" || input_Search === "All") {
-    render_ListUI(manager.arr_Employee);
-    return;
-  }
-
-  const filter_Employee = manager.filter_Employee(input_Search);
-
-  render_ListUI(filter_Employee);
+  getEle("tknv").disabled = false;
+  resetForm();
 };
 
 // 2. Khi bấm nút thêm employee
-Dom_Id("btnThemNV").onclick = function () {
-  const obj_Employee = get_Employee_Info();
+getEle("btnThemNV").onclick = function () {
+  const obj_Employee = get_Employee_Info(true);
+
+  if (!obj_Employee) return;
 
   manager.add_Employee(obj_Employee);
 
   render_ListUI(manager.arr_Employee);
 
   set_localStorage();
+  //Dom tới nút đóng khi thêm hoặc cập nhật employee
+  getEle("btnDong").click();
 };
 
-console.log(manager.arr_Employee);
+// 4. Khi nhấp vào nút edit employee
+const btn_Edit_Employee = (account) => {
+  getEle("header-title").innerHTML = "Edit Information";
+  getEle("btnThemNV").style.display = "none";
+  getEle("btnCapNhat").style.display = "block";
+
+  // Đưa lại thông tin vào phần input
+  const obj_Employee = manager.get_Account_Employee(account);
+  if (obj_Employee) {
+    getEle("tknv").value = obj_Employee.account;
+  }
+  // Block phần tai_Khoan
+  getEle("tknv").disabled = true;
+
+  getEle("name").value = obj_Employee.fullname;
+  getEle("email").value = obj_Employee.email;
+  getEle("password").value = obj_Employee.password;
+  getEle("datepicker").value = obj_Employee.workdays;
+  getEle("luongCB").value = obj_Employee.basicSalary;
+  getEle("chucvu").value = obj_Employee.position;
+  getEle("gioLam").value = obj_Employee.workinghour;
+};
+// Khai báo ra ngoài window
+window.btn_Edit_Employee = btn_Edit_Employee;
+
+// 5. Khi nhấp vào nút update employee
+getEle("btnCapNhat").onclick = function () {
+  let obj_Employee = get_Employee_Info(false);
+  manager.update_Employee(obj_Employee);
+  render_ListUI(manager.arr_Employee);
+  set_localStorage();
+
+  getEle("btnDong").click();
+};
+
+// 6. Khi bấm nút tìm kiếm xếp loại
+getEle("btnTimNV").onclick = function () {
+  // Dom tới người dùng nhập tìm kiếm
+  const input_Search = getEle("searchName").value;
+  const search_Employee = manager.search_Employee(input_Search);
+  render_ListUI(search_Employee);
+};

@@ -9,7 +9,7 @@ class Employee{
             this.position = position;
             this.workinghour = workinghour;
             this.TotalSalary = 0;
-            this.Xep_Loai = "Nhân viên trung bình";
+            this.Xep_Loai = "";
     }
     calculate_TotalSalary(salary_coefficient){
     this.TotalSalary = Number(this.basicSalary*salary_coefficient);
