@@ -143,7 +143,7 @@ class Validation {
   }
 
     checkWorkDays(value, errorId, inputID, message) {
-    let workdays =/^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/;
+    const workdays =/^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/;
       if (value.match(workdays)) {
       getEle(errorId).style.display = "none";
       getEle(errorId).innerHTML = "";
